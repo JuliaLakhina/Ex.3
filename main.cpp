@@ -1,5 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <boost/filesystem.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -8,6 +10,8 @@
 #include <Windows.h>
 using namespace std;
 using namespace boost::filesystem;
+namespace pt = boost::property_tree;
+
 void search(path dir_path)
 {
 	ofstream f("AbFiles.tsv");
@@ -27,16 +31,47 @@ void search(path dir_path)
 				a = result.str();
 				f << it->path().filename().string() << "\n" << it->path() << "\n" <<  file_size(it->path()) << "\n" <<  md5(a) << endl;
 				f << endl;
-			}
-	}
-	else
-	{
-		cout << dir_path << " does not exist\n";
-	}
+				k = k + file_size(it->path());
+
+				boost::property_tree::ptree tree;
 
 
-	f.close();
-	return;
+				cout << "Do you want to save in json?" << endl;
+				string c;
+
+				if (c == "yes")
+				{
+					int i = 1;
+					+
+						+	//General size
+						+int sizesize = 0;
+					for (Fileinfo it : vec_finfo) {
+						tree.put("File" + std::to_string(i), it->path);
+						tree.put("Size" + std::to_string(i), file_size);
+						tree.put("Hash" + std::to_string(i), a);
+						i++;
+						+
+					}
+
+					std::stringstream ss;
+					boost::property_tree::write_json(ss, tree);
+					const std::string result = ss.str();
+					cout << result << endl;
+					std::ofstream ofs("result.json");
+					boost::property_tree::write_json(ofs, tree, true);
+					ofs.close();
+
+				}
+
+				}
+				else
+				{
+					cout << dir_path << " does not exist\n";
+				}
+
+
+			f.close();
+			return;
 };
 void checkIn(path dir_path)
 {
@@ -121,6 +156,7 @@ int main(int argc, char* argv[1])
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	
+	identifier;
 	
 	cout << "If you want to search your files enter 1" << "\n" << "If you want to check your files enter 2" << endl;
 	int y;
@@ -143,6 +179,8 @@ int main(int argc, char* argv[1])
 	else {
 		cout << dir_path << " does not exist\n";
 	}
+
+	goto identifier;
 
 	system("pause");
 	return 0;
